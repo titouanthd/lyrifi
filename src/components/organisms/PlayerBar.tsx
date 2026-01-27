@@ -1,0 +1,148 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false }) as any;
+import { usePlayerStore } from '@/store/usePlayerStore';
+import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Volume2 } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import Image from 'next/image';
+
+const PlayerBar = () => {
+  const { 
+    currentTrack, 
+    isPlaying, 
+    setIsPlaying, 
+    volume, 
+    setVolume, 
+    next, 
+    previous, 
+    isShuffle, 
+    toggleShuffle,
+    repeatMode,
+    setRepeatMode
+  } = usePlayerStore();
+  
+  const [hasWindow, setHasWindow] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHasWindow(true);
+      // Rehydrate store on mount
+      usePlayerStore.persist.rehydrate();
+    }
+  }, []);
+
+  if (!currentTrack) {
+    return (
+      <div className="h-24 bg-black border-t border-zinc-800 flex items-center justify-center text-zinc-500 italic">
+        No track selected
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-24 bg-black border-t border-zinc-800 px-4 flex items-center justify-between text-white">
+      {/* Track Info */}
+      <div className="flex items-center w-1/3">
+        <div className="w-14 h-14 bg-zinc-800 rounded mr-4 flex-shrink-0 relative">
+          {currentTrack.coverArt && (
+            <Image 
+              src={currentTrack.coverArt} 
+              alt={currentTrack.title} 
+              fill
+              className="object-cover rounded" 
+            />
+          )}
+        </div>
+        <div className="min-w-0">
+          <div className="font-semibold text-sm truncate">{currentTrack.title}</div>
+          <div className="text-xs text-zinc-400 truncate">{currentTrack.artist}</div>
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div className="flex flex-col items-center w-1/3 max-w-xl">
+        <div className="flex items-center space-x-6 mb-2">
+          <button 
+            onClick={toggleShuffle}
+            aria-label="Toggle Shuffle"
+            className={`${isShuffle ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition`}
+          >
+            <Shuffle size={20} />
+          </button>
+          <button onClick={previous} aria-label="Previous Track" className="text-zinc-400 hover:text-white transition">
+            <SkipBack size={24} fill="currentColor" />
+          </button>
+          <button 
+            aria-label={isPlaying ? "Pause" : "Play"}
+            className="bg-white text-black hover:scale-105 rounded-full w-8 h-8 flex items-center justify-center p-0 transition"
+            onClick={() => setIsPlaying(!isPlaying)}
+          >
+            {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} className="ml-1" fill="currentColor" />}
+          </button>
+          <button onClick={next} aria-label="Next Track" className="text-zinc-400 hover:text-white transition">
+            <SkipForward size={24} fill="currentColor" />
+          </button>
+          <button 
+            onClick={() => setRepeatMode(repeatMode === 'all' ? 'none' : 'all')}
+            aria-label="Toggle Repeat"
+            className={`${repeatMode !== 'none' ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition`}
+          >
+            <Repeat size={20} />
+          </button>
+        </div>
+        
+        <div className="w-full flex items-center space-x-2">
+          <span className="text-xs text-zinc-400 min-w-[40px] text-right">
+            {Math.floor(progress / 60)}:{Math.floor(progress % 60).toString().padStart(2, '0')}
+          </span>
+          <Slider 
+            value={[progress]} 
+            max={duration || 100} 
+            step={1} 
+            className="flex-1"
+            onValueChange={(vals) => setProgress(vals[0])}
+          />
+          <span className="text-xs text-zinc-400 min-w-[40px]">
+            {Math.floor(duration / 60)}:{Math.floor(duration % 60).toString().padStart(2, '0')}
+          </span>
+        </div>
+      </div>
+
+      {/* Volume */}
+      <div className="flex items-center justify-end w-1/3 space-x-2">
+        <Volume2 size={20} className="text-zinc-400" />
+        <div className="w-24">
+          <Slider 
+            value={[volume * 100]} 
+            max={100} 
+            step={1} 
+            onValueChange={(vals) => setVolume(vals[0] / 100)}
+          />
+        </div>
+      </div>
+
+      {/* Hidden Player */}
+      {hasWindow && currentTrack.youtube_id && (
+        <div className="hidden">
+          <ReactPlayer
+            url={`https://www.youtube.com/watch?v=${currentTrack.youtube_id}`}
+            playing={isPlaying}
+            volume={volume}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onProgress={(state: any) => setProgress(state.playedSeconds)}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onDuration={(d: any) => setDuration(d)}
+            onEnded={next}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PlayerBar;
