@@ -1,0 +1,10 @@
+[
+  {
+    "_id": "65d4f4d4f4d4f4d4f4d4f4d1",
+    "name": "Alice Doe",
+    "email": "alice@example.com",
+    "password": "password123",
+    "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice",
+    "favorites": ["65c3f3c3f3c3f3c3f3c3f3c1", "65c3f3c3f3c3f3c3f3c3f3c3"]
+  }
+]

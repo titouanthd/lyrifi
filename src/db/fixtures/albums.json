@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "65b2f2b2f2b2f2b2f2b2f2b1",
+    "title": "Discovery",
+    "mbid": "64467385-6490-349f-9556-91e0a297e201",
+    "artistId": "65a1f1a1f1a1f1a1f1a1f1a1",
+    "releaseDate": "2001-03-12T00:00:00.000Z",
+    "coverArtUrl": "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17"
+  },
+  {
+    "_id": "65b2f2b2f2b2f2b2f2b2f2b2",
+    "title": "A Night at the Opera",
+    "mbid": "06990d02-0e5a-3306-9321-c48197711204",
+    "artistId": "65a1f1a1f1a1f1a1f1a1f1a2",
+    "releaseDate": "1975-11-21T00:00:00.000Z",
+    "coverArtUrl": "https://images.unsplash.com/photo-1514525253342-b0bb4d722967"
+  }
+]

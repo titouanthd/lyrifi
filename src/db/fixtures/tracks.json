@@ -1,0 +1,32 @@
+[
+  {
+    "_id": "65c3f3c3f3c3f3c3f3c3f3c1",
+    "title": "One More Time",
+    "mbid": "62990666-6f81-4200-a54b-d4e5f0376d49",
+    "albumId": "65b2f2b2f2b2f2b2f2b2f2b1",
+    "artistId": "65a1f1a1f1a1f1a1f1a1f1a1",
+    "duration": 320,
+    "youtube_id": "FGBhQAkFHWY",
+    "thumbnailUrl": "https://i.ytimg.com/vi/FGBhQAkFHWY/hqdefault.jpg"
+  },
+  {
+    "_id": "65c3f3c3f3c3f3c3f3c3f3c2",
+    "title": "Harder, Better, Faster, Stronger",
+    "mbid": "19b161df-4b71-460d-852a-9214736f2d91",
+    "albumId": "65b2f2b2f2b2f2b2f2b2f2b1",
+    "artistId": "65a1f1a1f1a1f1a1f1a1f1a1",
+    "duration": 224,
+    "youtube_id": "gAjR4_CbPpQ",
+    "thumbnailUrl": "https://i.ytimg.com/vi/gAjR4_CbPpQ/hqdefault.jpg"
+  },
+  {
+    "_id": "65c3f3c3f3c3f3c3f3c3f3c3",
+    "title": "Bohemian Rhapsody",
+    "mbid": "62e604f7-3323-4414-8f6f-60721262d6b3",
+    "albumId": "65b2f2b2f2b2f2b2f2b2f2b2",
+    "artistId": "65a1f1a1f1a1f1a1f1a1f1a2",
+    "duration": 354,
+    "youtube_id": "fJ9rUzIMcZQ",
+    "thumbnailUrl": "https://i.ytimg.com/vi/fJ9rUzIMcZQ/hqdefault.jpg"
+  }
+]

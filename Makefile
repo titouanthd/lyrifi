@@ -21,3 +21,6 @@ db-down:
 
 db-logs:
 	docker compose logs -f
+
+db-seed:
+	npm run db:seed
