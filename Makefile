@@ -12,3 +12,12 @@ lint:
 
 test:
 	npm run test
+
+db-up:
+	docker compose up -d
+
+db-down:
+	docker compose down
+
+db-logs:
+	docker compose logs -f
