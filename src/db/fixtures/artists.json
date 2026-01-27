@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "65a1f1a1f1a1f1a1f1a1f1a1",
+    "name": "Daft Punk",
+    "mbid": "052d1d13-2015-4e0f-9710-ad939530c009",
+    "bio": "Daft Punk were a French electronic music duo formed in 1993 in Paris by Guy-Manuel de Homem-Christo and Thomas Bangalter.",
+    "imageUrl": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745",
+    "genres": ["Electronic", "House", "French House"]
+  },
+  {
+    "_id": "65a1f1a1f1a1f1a1f1a1f1a2",
+    "name": "Queen",
+    "mbid": "0383dadf-2a4a-40ad-a4ee-2e05080321c3",
+    "bio": "Queen are a British rock band formed in London in 1970. Their classic line-up was Freddie Mercury, Brian May, Roger Taylor and John Deacon.",
+    "imageUrl": "https://images.unsplash.com/photo-1521337581100-8ca9a73a5f79",
+    "genres": ["Rock", "Hard Rock"]
+  }
+]
