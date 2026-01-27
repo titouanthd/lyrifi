@@ -1,0 +1,14 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: lyrifi-mongodb
+    ports:
+      - "27061:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: toor
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:

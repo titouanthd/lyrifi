@@ -27,6 +27,18 @@ Lyrifi est une plateforme de streaming musical moderne construite avec Next.js, 
 | `make dev` | Start development server / Démarrer le serveur de développement |
 | `make build` | Build for production / Construire pour la production |
 | `make lint` | Run linter / Exécuter le linter |
+| `make db-up` | Start MongoDB container / Démarrer le conteneur MongoDB |
+| `make db-down` | Stop MongoDB container / Arrêter le conteneur MongoDB |
+| `make db-logs` | View MongoDB logs / Voir les logs MongoDB |
+
+## 🗄️ Database / Base de données
+
+The project uses MongoDB. For local development, a Docker configuration is provided.
+
+**Connection String (Local):**
+```
+MONGODB_URI=mongodb://root:toor@localhost:27061/lyrifi?authSource=admin
+```
 
 ## 📂 Project Structure / Structure du Projet
 
