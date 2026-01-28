@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import * as Mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/lyrifi';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://root:toor@localhost:27061/lyrifi_db_dev?authSource=admin';
 
 if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable inside .env.local');

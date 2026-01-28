@@ -36,8 +36,10 @@ Lyrifi est une plateforme de streaming musical moderne construite avec Next.js, 
 The project uses MongoDB. For local development, a Docker configuration is provided.
 
 **Connection String (Local):**
+
+Don't forget to add your username:password if you require an authentication
 ```
-MONGODB_URI=mongodb://root:toor@localhost:27061/lyrifi?authSource=admin
+MONGODB_URI=mongodb://root:toor@localhost:27061/lyrifi_db_dev?authSource=admin
 ```
 
 ## 📂 Project Structure / Structure du Projet

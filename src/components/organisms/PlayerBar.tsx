@@ -2,8 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ReactPlayer = dynamic(() => import('react-player'), { ssr: false }) as any;
+const ReactPlayer = dynamic(() => import('react-player'), {
+  ssr: false,
+});
+
 import { usePlayerStore } from '@/store/usePlayerStore';
 import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Volume2 } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
@@ -133,10 +135,8 @@ const PlayerBar = () => {
             url={`https://www.youtube.com/watch?v=${currentTrack.youtube_id}`}
             playing={isPlaying}
             volume={volume}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onProgress={(state: any) => setProgress(state.playedSeconds)}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onDuration={(d: any) => setDuration(d)}
+            onProgress={(state: { playedSeconds: number }) => setProgress(state.playedSeconds)}
+            onDuration={(d: number) => setDuration(d)}
             onEnded={next}
           />
         </div>

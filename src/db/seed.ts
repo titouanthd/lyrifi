@@ -8,7 +8,7 @@ import User from '../models/User';
 import Playlist from '../models/Playlist';
 
 export async function seed() {
-  const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://root:toor@localhost:27061/lyrifi?authSource=admin';
+  const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://root:toor@localhost:27061/lyrifi_db_dev?authSource=admin';
   try {
     console.log('Connecting to MongoDB...');
     await mongoose.connect(MONGODB_URI);

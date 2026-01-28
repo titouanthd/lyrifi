@@ -24,8 +24,8 @@ export async function GET(req: NextRequest) {
     const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(escapedQuery, 'i');
 
-    // 1. Find matching artists
-    const artists = await Artist.find({ name: regex }).sort({ name: 1 }).limit(20);
+    // 1. Find matching artists, don't forget to exec()
+    const artists = await Artist.find({ name: regex }).sort({ name: 1 }).limit(20).exec();
     const matchingArtistIds = artists.map(a => a._id);
 
     // 2. Find matching tracks (by title or artist name)
