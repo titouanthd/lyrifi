@@ -18,8 +18,10 @@ interface PlayerState {
   volume: number;
   isShuffle: boolean;
   repeatMode: 'none' | 'one' | 'all';
+  isVideoVisible: boolean;
   
   setIsPlaying: (isPlaying: boolean) => void;
+  setIsVideoVisible: (visible: boolean) => void;
   setCurrentTrack: (track: Track | null) => void;
   playTrack: (track: Track) => void;
   addToQueue: (track: Track) => void;
@@ -40,8 +42,10 @@ export const usePlayerStore = create<PlayerState>()(
       volume: 1,
       isShuffle: false,
       repeatMode: 'none',
+      isVideoVisible: false,
 
       setIsPlaying: (isPlaying) => set({ isPlaying }),
+      setIsVideoVisible: (isVideoVisible) => set({ isVideoVisible }),
       setCurrentTrack: (currentTrack) => set({ currentTrack, isPlaying: !!currentTrack }),
       playTrack: (track) => {
         const { queue } = get();

@@ -7,7 +7,7 @@ const ReactPlayer = dynamic(() => import('react-player'), {
 }) as React.ComponentType<any>;
 
 import { usePlayerStore } from '@/store/usePlayerStore';
-import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Volume2 } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Volume2, Tv } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import Image from 'next/image';
 
@@ -23,7 +23,9 @@ const PlayerBar = () => {
     isShuffle, 
     toggleShuffle,
     repeatMode,
-    setRepeatMode
+    setRepeatMode,
+    isVideoVisible,
+    setIsVideoVisible
   } = usePlayerStore();
   
   const [hasWindow, setHasWindow] = useState(false);
@@ -36,8 +38,12 @@ const PlayerBar = () => {
       setHasWindow(true);
       // Rehydrate store on mount
       usePlayerStore.persist.rehydrate();
+      // Fix for NotAllowedError: ensure we don't autoplay on refresh
+      setIsPlaying(false);
+      // Always default hidden on mount
+      setIsVideoVisible(false);
     }
-  }, []);
+  }, [setIsPlaying, setIsVideoVisible]);
 
   if (!currentTrack) {
     return (
@@ -116,26 +122,42 @@ const PlayerBar = () => {
         </div>
       </div>
 
-      {/* Volume */}
-      <div className="flex items-center justify-end w-1/3 space-x-2">
-        <Volume2 size={20} className="text-zinc-400" />
-        <div className="w-24">
-          <Slider 
-            value={[volume * 100]} 
-            max={100} 
-            step={1} 
-            onValueChange={(vals) => setVolume(vals[0] / 100)}
-          />
+      {/* Volume and Video Toggle */}
+      <div className="flex items-center justify-end w-1/3 space-x-4">
+        <button
+          onClick={() => setIsVideoVisible(!isVideoVisible)}
+          className={`${isVideoVisible ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition`}
+          aria-label="Toggle Video"
+        >
+          <Tv size={20} />
+        </button>
+        <div className="flex items-center space-x-2">
+          <Volume2 size={20} className="text-zinc-400" />
+          <div className="w-24">
+            <Slider
+              value={[volume * 100]}
+              max={100}
+              step={1}
+              onValueChange={(vals) => setVolume(vals[0] / 100)}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Hidden Player */}
+      {/* Video Player Container */}
       {hasWindow && currentTrack.youtube_id && (
-        <div className="hidden">
+        <div
+          className={`fixed bottom-28 right-4 z-50 overflow-hidden rounded-lg shadow-2xl border border-zinc-800 bg-black transition-opacity duration-300 ${
+            isVideoVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+          style={{ width: '320px', height: '180px' }}
+        >
           <ReactPlayer
             url={`https://www.youtube.com/watch?v=${currentTrack.youtube_id}`}
             playing={isPlaying}
             volume={volume}
+            width="100%"
+            height="100%"
             onProgress={(state: { playedSeconds: number }) => setProgress(state.playedSeconds)}
             // onDuration={(d: number) => setDuration(d)}
             onEnded={next}
