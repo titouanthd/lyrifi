@@ -7,13 +7,14 @@ import {usePlayerStore} from '@/store/usePlayerStore';
 
 // Mock Next.js dynamic import
 jest.mock('next/dynamic', () => () => {
-  return () => <div data-testid="react-player"/>;
+  const MockDynamic = () => <div data-testid="react-player"/>;
+  MockDynamic.displayName = 'MockDynamic';
+  return MockDynamic;
 });
 
 // Mock Image component
 jest.mock('next/image', () => ({
   __esModule: true,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   default: ({ fill, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img {...props} alt={props.alt || ""} />

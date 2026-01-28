@@ -27,9 +27,11 @@ Lyrifi est une plateforme de streaming musical moderne construite avec Next.js, 
 | `make dev` | Start development server / Démarrer le serveur de développement |
 | `make build` | Build for production / Construire pour la production |
 | `make lint` | Run linter / Exécuter le linter |
+| `make test` | Run tests / Exécuter les tests |
 | `make db-up` | Start MongoDB container / Démarrer le conteneur MongoDB |
 | `make db-down` | Stop MongoDB container / Arrêter le conteneur MongoDB |
 | `make db-logs` | View MongoDB logs / Voir les logs MongoDB |
+| `make db-seed` | Seed database / Peupler la base de données |
 
 ## 🗄️ Database / Base de données
 
