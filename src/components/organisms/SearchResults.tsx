@@ -39,7 +39,7 @@ interface SearchResultsProps {
 }
 
 const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => {
-  const { playTrack } = usePlayerStore();
+  const playTrack = usePlayerStore((state: any) => state.playTrack);
 
   if (isLoading) {
     return (
