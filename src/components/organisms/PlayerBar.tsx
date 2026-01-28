@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 const ReactPlayer = dynamic(() => import('react-player'), {
   ssr: false,
-});
+}) as React.ComponentType<any>;
 
 import { usePlayerStore } from '@/store/usePlayerStore';
 import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Volume2 } from 'lucide-react';
@@ -32,6 +32,7 @@ const PlayerBar = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setHasWindow(true);
       // Rehydrate store on mount
       usePlayerStore.persist.rehydrate();
