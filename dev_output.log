@@ -1,0 +1,57 @@
+
+> lyrifi@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.5.10
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+
+ ✓ Starting...
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+ ✓ Ready in 2.2s
+ ○ Compiling /search ...
+ ✓ Compiled /search in 13.9s (1073 modules)
+ GET /search 200 in 15851ms
+ ○ Compiling /api/search ...
+ ✓ Compiled /api/search in 1351ms (1081 modules)
+ GET /api/search?q=Daft%20Punk 200 in 2003ms
+ GET /search 200 in 360ms
+ ⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
+ ⨯ upstream image response failed for https://i.ytimg.com/vi/FGBhQAkFHWY/hqdefault.jpg 404
+ ⨯ upstream image response failed for https://i.ytimg.com/vi/FGBhQAkFHWY/hqdefault.jpg 404
+ ⨯ upstream image response failed for https://i.ytimg.com/vi/FGBhQAkFHWY/hqdefault.jpg 404
+Search API error: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at <unknown> (MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017)
+    at async connectDB (src/lib/mongodb.ts:35:17)
+    at async GET (src/app/api/search/route.ts:22:5)
+  33 |     });
+  34 |   }
+> 35 |   cached.conn = await cached.promise;
+     |                 ^
+  36 |   return cached.conn;
+  37 | }
+  38 | {
+  errorLabelSet: Set(0) {},
+  reason: [TopologyDescription],
+  code: undefined,
+  [cause]: [TopologyDescription]
+}
+ ✓ Compiled in 419ms (453 modules)
+ ✓ Compiled in 209ms (453 modules)
+ ✓ Compiled in 182ms (454 modules)
+ ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.10
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+
+ ✓ Starting...
+ ✓ Ready in 2.2s
+ ○ Compiling /search ...
+ ✓ Compiled /search in 8.1s (1057 modules)
+ GET /search 200 in 10105ms
+ GET /search?q=Daft+Punk 200 in 48ms
+ GET /search?q=Daft+Punk 200 in 37ms

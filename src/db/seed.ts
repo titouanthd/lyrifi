@@ -57,7 +57,7 @@ export async function seed() {
 
     console.log('Seeding completed successfully!');
   } catch (error) {
-    console.error('Error during seeding:', error);
+    console.error('Error seeding database:', error);
     throw error;
   }
 }
@@ -69,6 +69,7 @@ if (require.main === module) {
       process.exit(0);
     })
     .catch((err) => {
+      console.error(err);
       mongoose.connection.close();
       process.exit(1);
     });
