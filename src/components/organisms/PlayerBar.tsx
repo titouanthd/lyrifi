@@ -153,7 +153,10 @@ const PlayerBar = () => {
           style={{ width: '320px', height: '180px' }}
         >
           <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${currentTrack.youtube_id}`}
+            key={currentTrack.youtube_id}
+            url={currentTrack.youtube_id?.trim().startsWith('http')
+              ? currentTrack.youtube_id.trim()
+              : `https://youtu.be/${currentTrack.youtube_id?.trim()}`}
             playing={isPlaying}
             volume={volume}
             width="100%"
