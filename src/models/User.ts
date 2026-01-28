@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, model, models } from 'mongoose';
+import mongoose, {Schema, Document, model, models, Model} from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 export interface IUser extends Document {
@@ -27,4 +27,4 @@ UserSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-export default models.User || model<IUser>('User', UserSchema);
+export default models.User || model('User', UserSchema) as Model<IUser>;

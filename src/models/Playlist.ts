@@ -1,4 +1,5 @@
-import mongoose, { Schema, Document, model, models } from 'mongoose';
+import mongoose, {Schema, Document, model, models, Model} from 'mongoose';
+import {IArtist} from "@/models/Artist";
 
 export interface IPlaylist extends Document {
   name: string;
@@ -18,4 +19,4 @@ const PlaylistSchema = new Schema<IPlaylist>({
   privacy: { type: String, enum: ['Public', 'Private'], default: 'Private' },
 }, { timestamps: true });
 
-export default models.Playlist || model<IPlaylist>('Playlist', PlaylistSchema);
+export default models.Playlist || model('Playlist', PlaylistSchema) as Model<IPlaylist>;
