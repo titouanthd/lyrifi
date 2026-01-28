@@ -1,4 +1,4 @@
-import { Schema, Document, model, models } from 'mongoose';
+import {Schema, Document, model, models, Model} from 'mongoose';
 
 export interface IArtist extends Document {
   name: string;
@@ -16,4 +16,4 @@ const ArtistSchema = new Schema<IArtist>({
   genres: [{ type: String }],
 }, { timestamps: true });
 
-export default models.Artist || model<IArtist>('Artist', ArtistSchema);
+export default models.Artist || model('Artist', ArtistSchema) as Model<IArtist>;

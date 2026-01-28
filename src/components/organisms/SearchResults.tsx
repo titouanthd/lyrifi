@@ -93,6 +93,10 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
                     alt={artist.name}
                     fill
                     className="object-cover rounded-full shadow-lg"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop';
+                    }}
                   />
                 </div>
                 <p className="font-bold truncate">{artist.name}</p>
@@ -115,10 +119,15 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
               >
                 <div className="relative h-12 w-12 flex-shrink-0">
                   <Image
-                    src={track.thumbnailUrl || track.albumId?.coverArtUrl || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&h=100&fit=crop'}
-                    alt={track.title}
-                    fill
-                    className="object-cover rounded shadow"
+                      src={track.thumbnailUrl || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&h=100&fit=crop'}
+                      alt={track.title}
+                      fill
+                      unoptimized // <--- This is the magic line
+                      className="object-cover rounded shadow"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&h=100&fit=crop';
+                      }}
                   />
                   <button
                     onClick={() => handlePlayTrack(track)}
@@ -156,6 +165,10 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
                     alt={album.title}
                     fill
                     className="object-cover rounded shadow-lg"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&h=100&fit=crop';
+                    }}
                   />
                 </div>
                 <p className="font-bold truncate">{album.title}</p>
@@ -179,6 +192,10 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
                     alt={playlist.name}
                     fill
                     className="object-cover rounded shadow-lg"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&h=100&fit=crop';
+                    }}
                   />
                 </div>
                 <p className="font-bold truncate">{playlist.name}</p>

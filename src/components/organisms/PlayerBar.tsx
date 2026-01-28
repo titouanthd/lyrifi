@@ -137,7 +137,7 @@ const PlayerBar = () => {
             playing={isPlaying}
             volume={volume}
             onProgress={(state: { playedSeconds: number }) => setProgress(state.playedSeconds)}
-            onDuration={(d: number) => setDuration(d)}
+            // onDuration={(d: number) => setDuration(d)}
             onEnded={next}
           />
         </div>

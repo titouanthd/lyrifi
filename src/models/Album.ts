@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, model, models } from 'mongoose';
+import mongoose, {Schema, Document, model, models, Model} from 'mongoose';
 
 export interface IAlbum extends Document {
   title: string;
@@ -16,4 +16,4 @@ const AlbumSchema = new Schema<IAlbum>({
   coverArtUrl: { type: String },
 }, { timestamps: true });
 
-export default models.Album || model<IAlbum>('Album', AlbumSchema);
+export  default models.Album || model('Album', AlbumSchema) as Model<IAlbum>;

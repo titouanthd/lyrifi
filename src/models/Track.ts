@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, model, models } from 'mongoose';
+import mongoose, {Schema, Document, model, models, Model} from 'mongoose';
 
 export interface ITrack extends Document {
   title: string;
@@ -20,4 +20,4 @@ const TrackSchema = new Schema<ITrack>({
   thumbnailUrl: { type: String },
 }, { timestamps: true });
 
-export default models.Track || model<ITrack>('Track', TrackSchema);
+export default models.Track || model('Track', TrackSchema) as Model<ITrack>;

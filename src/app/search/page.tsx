@@ -6,74 +6,60 @@ import SearchInput from '@/components/organisms/SearchInput';
 import SearchResults from '@/components/organisms/SearchResults';
 
 function SearchContent() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const [results, setResults] = useState({
-    tracks: [],
-    artists: [],
-    albums: [],
-    playlists: []
-  });
+  // 1. Get query directly from URL. No more 'const [query, setQuery]'
+  const query = searchParams.get('q') || '';
+  const [results, setResults] = useState({ tracks: [], artists: [], albums: [], playlists: [] });
   const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useState(searchParams.get('q') || '');
 
-  const handleSearch = useCallback(async (q: string) => {
-    setQuery(q);
-
-    // Update URL
-    const params = new URLSearchParams(searchParams.toString());
-    if (q) {
-      params.set('q', q);
+  // 2. Stable search handler. No searchParams dependency!
+  const handleSearch = useCallback((newQuery: string) => {
+    const params = new URLSearchParams(window.location.search); // Use window instead of hook to avoid dependency
+    if (newQuery) {
+      params.set('q', newQuery);
     } else {
       params.delete('q');
     }
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [pathname, router]);
 
-    if (!q.trim()) {
-      setResults({ tracks: [], artists: [], albums: [], playlists: [] });
-      setIsLoading(false);
-      return;
-    }
+  // 3. Single Effect to fetch data whenever the URL query changes
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!query.trim()) {
+        setResults({ tracks: [], artists: [], albums: [], playlists: [] });
+        return;
+      }
 
-    setIsLoading(true);
-    try {
-      const response = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-      if (response.ok) {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         const data = await response.json();
         setResults(data);
-      } else {
-        console.error('Search API returned an error');
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Search failed:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [pathname, router, searchParams]);
+    };
 
-  // Initial search from URL
-  useEffect(() => {
-    const q = searchParams.get('q');
-    if (q) {
-      handleSearch(q);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    fetchData();
+  }, [query]); // Only runs when the 'q' in the URL actually changes
 
   return (
-    <div className="flex flex-col">
-      <div className="mb-8">
-        <SearchInput onSearch={handleSearch} initialValue={query} />
+      <div className="flex flex-col">
+        <div className="mb-8">
+          <SearchInput onSearch={handleSearch} initialValue={query} />
+        </div>
+        <SearchResults
+            results={results}
+            isLoading={isLoading}
+            hasQuery={query.length > 0}
+        />
       </div>
-
-      <SearchResults
-        results={results}
-        isLoading={isLoading}
-        hasQuery={query.trim().length > 0}
-      />
-    </div>
   );
 }
 

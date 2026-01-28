@@ -24,40 +24,22 @@ export async function GET(req: NextRequest) {
     const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(escapedQuery, 'i');
 
-    // 1. Find matching artists, don't forget to exec()
-    const artists = await Artist.find({ name: regex }).sort({ name: 1 }).limit(20).exec();
+    const [artists, playlists] = await Promise.all([
+      await Artist.find({name: regex}).sort({name: 1}).limit(20).exec() as Artist[],
+      await Playlist.find({ name: regex, privacy: 'Public' }).sort({ name: 1 }).limit(20).exec() as any[]
+    ]);
+
     const matchingArtistIds = artists.map(a => a._id);
 
-    // 2. Find matching tracks (by title or artist name)
-    const tracks = await Track.find({
-      $or: [
-        { title: regex },
-        { artistId: { $in: matchingArtistIds } }
-      ]
-    })
-    .populate('artistId')
-    .populate('albumId')
-    .sort({ title: 1 })
-    .limit(20);
+    const [tracks, albums] = await Promise.all([
+      Track.find({
+        $or: [{ title: regex }, { artistId: { $in: matchingArtistIds } }]
+      }).populate('artistId').populate('albumId').sort({ title: 1 }).limit(20).exec(),
 
-    // 3. Find matching albums (by title or artist name)
-    const albums = await Album.find({
-      $or: [
-        { title: regex },
-        { artistId: { $in: matchingArtistIds } }
-      ]
-    })
-    .populate('artistId')
-    .sort({ title: 1 })
-    .limit(20);
-
-    // 4. Find matching playlists (by name, public only for now)
-    const playlists = await Playlist.find({
-      name: regex,
-      privacy: 'Public'
-    })
-    .sort({ name: 1 })
-    .limit(20);
+      Album.find({
+        $or: [{ title: regex }, { artistId: { $in: matchingArtistIds } }]
+      }).populate('artistId').sort({ title: 1 }).limit(20).exec()
+    ]);
 
     return NextResponse.json({
       tracks,
