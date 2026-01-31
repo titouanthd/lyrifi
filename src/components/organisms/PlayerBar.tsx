@@ -155,10 +155,10 @@ const PlayerBar = () => {
   }
 
   return (
-      <div className="h-24 bg-black border-t border-zinc-800 px-4 flex items-center justify-between text-white">
+      <div className="h-24 bg-black border-t border-zinc-800 px-4 flex items-center justify-between text-white relative">
         {/* Track Info */}
-        <div className="flex items-center w-1/3">
-          <div className="w-14 h-14 bg-zinc-800 rounded mr-4 flex-shrink-0 relative">
+        <div className="flex items-center flex-1 min-w-0 mr-4">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-zinc-800 rounded mr-3 sm:mr-4 flex-shrink-0 relative">
             {currentTrack.coverArt && (
                 <Image
                     src={currentTrack.coverArt}
@@ -169,9 +169,9 @@ const PlayerBar = () => {
             )}
           </div>
           <div className="min-w-0">
-            <Link href={`/track/${currentTrack.id}`} className="font-semibold text-sm truncate hover:underline block">{currentTrack.title}</Link>
+            <Link href={`/track/${currentTrack.id}`} className="font-semibold text-xs sm:text-sm truncate">{currentTrack.title}</Link>
             <div className="flex items-center gap-1 text-xs text-zinc-400 truncate">
-              <Link href={`/artist/${currentTrack.artistId}`} className="hover:underline">{currentTrack.artist}</Link>
+              <Link href={`/artist/${currentTrack.artistId}`} className="text-[10px] sm:text-xs text-zinc-400 truncate hover:underline">{currentTrack.artist}</Link>
               {currentTrack.album && (
                 <>
                   <span>•</span>
@@ -183,41 +183,42 @@ const PlayerBar = () => {
         </div>
 
         {/* Controls */}
-        <div className="flex flex-col items-center w-1/3 max-w-xl">
-          <div className="flex items-center space-x-6 mb-2">
+        <div className="flex flex-col items-center flex-1 max-w-xl px-2 sm:px-0">
+          <div className="flex items-center space-x-4 sm:space-x-6 mb-2">
             <button
                 onClick={toggleShuffle}
                 aria-label="Shuffle"
-                className={`${isShuffle ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition`}
+                className={`${isShuffle ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition hidden sm:block`}
             >
-              <Shuffle size={20} />
+              <Shuffle size={18} className="sm:size-5" />
             </button>
             <button onClick={previous} aria-label="Previous" className="text-zinc-400 hover:text-white transition">
-              <SkipBack size={24} fill="currentColor" />
+              <SkipBack size={20} className="sm:size-6" fill="currentColor" />
             </button>
             <button
+                aria-label={isPlaying ? "Pause" : "Play"}
                 className="bg-white text-black hover:scale-105 rounded-full w-8 h-8 flex items-center justify-center p-0 transition"
                 onClick={() => setIsPlaying(!isPlaying)}
                 aria-label={isPlaying ? "Pause" : "Play"}
             >
-              {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} className="ml-1" fill="currentColor" />}
+              {isPlaying ? <Pause size={18} className="sm:size-5" fill="currentColor" /> : <Play size={18} className="sm:size-5 ml-1" fill="currentColor" />}
             </button>
             <button onClick={next} aria-label="Next" className="text-zinc-400 hover:text-white transition">
-              <SkipForward size={24} fill="currentColor" />
+              <SkipForward size={20} className="sm:size-6" fill="currentColor" />
             </button>
             <button
                 onClick={() => setRepeatMode(repeatMode === 'all' ? 'none' : 'all')}
                 aria-label="Repeat"
-                className={`${repeatMode !== 'none' ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition`}
+                className={`${repeatMode !== 'none' ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition hidden sm:block`}
             >
-              <Repeat size={20} />
+              <Repeat size={18} className="sm:size-5" />
             </button>
           </div>
 
           <div className="w-full flex items-center space-x-2">
-          <span className="text-xs text-zinc-400 min-w-[40px] text-right">
-            {Math.floor(progress / 60)}:{Math.floor(progress % 60).toString().padStart(2, '0')}
-          </span>
+            <span className="text-[10px] sm:text-xs text-zinc-400 min-w-[30px] sm:min-w-[40px] text-right">
+              {Math.floor(progress / 60)}:{Math.floor(progress % 60).toString().padStart(2, '0')}
+            </span>
             <Slider
                 value={[progress]}
                 max={duration || 100}
@@ -225,16 +226,17 @@ const PlayerBar = () => {
                 className="flex-1"
                 onValueChange={handleSeek}
             />
-            <span className="text-xs text-zinc-400 min-w-[40px]">
-            {Math.floor(duration / 60)}:{Math.floor(duration % 60).toString().padStart(2, '0')}
-          </span>
+            <span className="text-[10px] sm:text-xs text-zinc-400 min-w-[30px] sm:min-w-[40px]">
+              {Math.floor(duration / 60)}:{Math.floor(duration % 60).toString().padStart(2, '0')}
+            </span>
           </div>
         </div>
 
         {/* Volume and Video Toggle */}
-        <div className="flex items-center justify-end w-1/3 space-x-4">
+        <div className="hidden md:flex items-center justify-end flex-1 space-x-4">
           <button
               onClick={() => setIsVideoVisible(!isVideoVisible)}
+              aria-label="Toggle Video"
               className={`${isVideoVisible ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition`}
           >
             <Tv size={20} />
@@ -256,8 +258,7 @@ const PlayerBar = () => {
         <div
             className={`fixed bottom-28 right-4 z-50 overflow-hidden rounded-lg shadow-2xl border border-zinc-800 bg-black transition-opacity duration-300 ${
                 isVideoVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-            style={{ width: '320px', height: '180px' }}
+            } w-[240px] h-[135px] sm:w-[320px] sm:h-[180px]`}
         >
           <div id="youtube-player" style={{ width: '100%', height: '100%' }}></div>
         </div>
