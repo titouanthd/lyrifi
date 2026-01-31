@@ -5,6 +5,7 @@ import { usePlayerStore } from '@/store/usePlayerStore';
 import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Volume2, Tv } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // Declare YT types for TS support if not using @types/youtube
 declare global {
@@ -53,7 +54,11 @@ const PlayerBar = () => {
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+        if (firstScriptTag && firstScriptTag.parentNode) {
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        } else {
+          document.head.appendChild(tag);
+        }
       }
     }
   }, [setIsPlaying, setIsVideoVisible]);
@@ -164,8 +169,16 @@ const PlayerBar = () => {
             )}
           </div>
           <div className="min-w-0">
-            <div className="font-semibold text-sm truncate">{currentTrack.title}</div>
-            <div className="text-xs text-zinc-400 truncate">{currentTrack.artist}</div>
+            <Link href={`/track/${currentTrack.id}`} className="font-semibold text-sm truncate hover:underline block">{currentTrack.title}</Link>
+            <div className="flex items-center gap-1 text-xs text-zinc-400 truncate">
+              <Link href={`/artist/${currentTrack.artistId}`} className="hover:underline">{currentTrack.artist}</Link>
+              {currentTrack.album && (
+                <>
+                  <span>•</span>
+                  <Link href={`/album/${currentTrack.albumId}`} className="hover:underline">{currentTrack.album}</Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
@@ -174,24 +187,27 @@ const PlayerBar = () => {
           <div className="flex items-center space-x-6 mb-2">
             <button
                 onClick={toggleShuffle}
+                aria-label="Shuffle"
                 className={`${isShuffle ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition`}
             >
               <Shuffle size={20} />
             </button>
-            <button onClick={previous} className="text-zinc-400 hover:text-white transition">
+            <button onClick={previous} aria-label="Previous" className="text-zinc-400 hover:text-white transition">
               <SkipBack size={24} fill="currentColor" />
             </button>
             <button
                 className="bg-white text-black hover:scale-105 rounded-full w-8 h-8 flex items-center justify-center p-0 transition"
                 onClick={() => setIsPlaying(!isPlaying)}
+                aria-label={isPlaying ? "Pause" : "Play"}
             >
               {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} className="ml-1" fill="currentColor" />}
             </button>
-            <button onClick={next} className="text-zinc-400 hover:text-white transition">
+            <button onClick={next} aria-label="Next" className="text-zinc-400 hover:text-white transition">
               <SkipForward size={24} fill="currentColor" />
             </button>
             <button
                 onClick={() => setRepeatMode(repeatMode === 'all' ? 'none' : 'all')}
+                aria-label="Repeat"
                 className={`${repeatMode !== 'none' ? 'text-green-500' : 'text-zinc-400'} hover:text-white transition`}
             >
               <Repeat size={20} />

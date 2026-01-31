@@ -24,11 +24,12 @@ async function connectDB() {
   }
 
   if (!cached.promise) {
+    const uri = process.env.MONGODB_URI || MONGODB_URI;
     const opts = {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((conn: typeof mongoose) => {
+    cached.promise = mongoose.connect(uri, opts).then((conn: typeof mongoose) => {
       return conn;
     });
   }
