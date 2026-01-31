@@ -4,7 +4,7 @@ import { Home, Search, Library, PlusSquare, Heart } from 'lucide-react';
 
 const Sidebar = () => {
   return (
-    <aside className="w-64 bg-black h-full flex flex-col text-gray-400 p-6">
+    <aside className="hidden md:flex w-64 bg-black h-full flex-col text-gray-400 p-6">
       <div className="mb-8">
         <h1 className="text-white text-2xl font-bold">Lyrifi</h1>
       </div>
