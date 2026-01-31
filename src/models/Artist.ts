@@ -6,6 +6,7 @@ export interface IArtist extends Document {
   bio?: string;
   imageUrl?: string;
   genres: string[];
+  monthlyListeners?: number;
 }
 
 const ArtistSchema = new Schema<IArtist>({
@@ -14,6 +15,7 @@ const ArtistSchema = new Schema<IArtist>({
   bio: { type: String },
   imageUrl: { type: String },
   genres: [{ type: String }],
+  monthlyListeners: { type: Number, default: 0 },
 }, { timestamps: true });
 
 export default models.Artist || model('Artist', ArtistSchema) as Model<IArtist>;

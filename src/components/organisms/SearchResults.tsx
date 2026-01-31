@@ -4,14 +4,15 @@ import React from 'react';
 import Image from 'next/image';
 import { Play } from 'lucide-react';
 import { usePlayerStore } from '@/store/usePlayerStore';
+import Link from 'next/link';
 
 interface SearchResultsProps {
   results: {
     tracks: {
       _id: string;
       title: string;
-      artistId: { name: string };
-      albumId?: { title: string; coverArtUrl?: string };
+      artistId: { _id: string, name: string };
+      albumId?: { _id: string, title: string; coverArtUrl?: string };
       duration: number;
       youtube_id?: string;
       thumbnailUrl?: string;
@@ -71,7 +72,9 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
       id: track._id,
       title: track.title,
       artist: track.artistId?.name || 'Unknown Artist',
+      artistId: track.artistId?._id,
       album: track.albumId?.title,
+      albumId: track.albumId?._id,
       coverArt: track.thumbnailUrl || track.albumId?.coverArtUrl,
       youtube_id: track.youtube_id,
       duration: track.duration,
@@ -86,7 +89,7 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
           <h2 className="text-2xl font-bold mb-4">Artists</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
             {artists.map((artist) => (
-              <div key={artist._id} className="bg-zinc-900/40 p-4 rounded-lg hover:bg-zinc-800 transition group cursor-pointer">
+              <Link key={artist._id} href={`/artist/${artist._id}`} className="bg-zinc-900/40 p-4 rounded-lg hover:bg-zinc-800 transition group cursor-pointer">
                 <div className="relative aspect-square mb-4">
                   <Image
                     src={artist.imageUrl || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop'}
@@ -101,7 +104,7 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
                 </div>
                 <p className="font-bold truncate">{artist.name}</p>
                 <p className="text-sm text-zinc-400 uppercase tracking-wider mt-1">Artist</p>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
@@ -137,11 +140,13 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
                   </button>
                 </div>
                 <div className="ml-4 flex-1 min-w-0">
-                  <p className="font-medium truncate">{track.title}</p>
-                  <p className="text-sm text-zinc-400 truncate hover:underline cursor-pointer">{track.artistId?.name}</p>
+                  <Link href={`/track/${track._id}`} className="font-medium truncate hover:underline block">{track.title}</Link>
+                  <Link href={`/artist/${track.artistId?._id}`} className="text-sm text-zinc-400 truncate hover:underline block">{track.artistId?.name}</Link>
                 </div>
                 <div className="text-sm text-zinc-400 ml-4 hidden sm:block truncate max-w-[200px]">
-                  {track.albumId?.title}
+                  {track.albumId && (
+                    <Link href={`/album/${track.albumId._id}`} className="hover:underline">{track.albumId.title}</Link>
+                  )}
                 </div>
                 <div className="text-sm text-zinc-400 ml-auto pl-4">
                   {Math.floor(track.duration / 60)}:{String(track.duration % 60).padStart(2, '0')}
@@ -158,7 +163,7 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
           <h2 className="text-2xl font-bold mb-4">Albums</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
             {albums.map((album) => (
-              <div key={album._id} className="bg-zinc-900/40 p-4 rounded-lg hover:bg-zinc-800 transition group cursor-pointer">
+              <Link key={album._id} href={`/album/${album._id}`} className="bg-zinc-900/40 p-4 rounded-lg hover:bg-zinc-800 transition group cursor-pointer">
                 <div className="relative aspect-square mb-4">
                   <Image
                     src={album.coverArtUrl || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop'}
@@ -173,7 +178,7 @@ const SearchResults = ({ results, isLoading, hasQuery }: SearchResultsProps) => 
                 </div>
                 <p className="font-bold truncate">{album.title}</p>
                 <p className="text-sm text-zinc-400 mt-1 truncate">{album.artistId?.name}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </section>

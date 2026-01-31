@@ -5,6 +5,7 @@ import { usePlayerStore } from '@/store/usePlayerStore';
 import { Play, Pause, SkipBack, SkipForward, Repeat, Shuffle, Volume2, Tv } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // Declare YT types for TS support if not using @types/youtube
 declare global {
@@ -168,8 +169,16 @@ const PlayerBar = () => {
             )}
           </div>
           <div className="min-w-0">
-            <div className="font-semibold text-xs sm:text-sm truncate">{currentTrack.title}</div>
-            <div className="text-[10px] sm:text-xs text-zinc-400 truncate">{currentTrack.artist}</div>
+            <Link href={`/track/${currentTrack.id}`} className="font-semibold text-xs sm:text-sm truncate">{currentTrack.title}</Link>
+            <div className="flex items-center gap-1 text-xs text-zinc-400 truncate">
+              <Link href={`/artist/${currentTrack.artistId}`} className="text-[10px] sm:text-xs text-zinc-400 truncate hover:underline">{currentTrack.artist}</Link>
+              {currentTrack.album && (
+                <>
+                  <span>•</span>
+                  <Link href={`/album/${currentTrack.albumId}`} className="hover:underline">{currentTrack.album}</Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
@@ -190,6 +199,7 @@ const PlayerBar = () => {
                 aria-label={isPlaying ? "Pause" : "Play"}
                 className="bg-white text-black hover:scale-105 rounded-full w-8 h-8 flex items-center justify-center p-0 transition"
                 onClick={() => setIsPlaying(!isPlaying)}
+                aria-label={isPlaying ? "Pause" : "Play"}
             >
               {isPlaying ? <Pause size={18} className="sm:size-5" fill="currentColor" /> : <Play size={18} className="sm:size-5 ml-1" fill="currentColor" />}
             </button>
